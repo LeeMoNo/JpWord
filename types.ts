@@ -11,7 +11,7 @@ export interface Word {
   level: JLPTLevel;
 }
 
-export type ViewType = 'home' | 'learn' | 'stats' | 'profile' | 'search';
+export type ViewType = 'home' | 'learn' | 'stats' | 'profile' | 'search' | 'game' | 'listening';
 
 export interface StudySession {
   total: number;

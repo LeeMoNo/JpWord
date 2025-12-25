@@ -7,6 +7,8 @@ import FlashcardView from './components/FlashcardView';
 import StatsView from './components/StatsView';
 import ProfileView from './components/ProfileView';
 import SearchView from './components/SearchView';
+import MatchingGameView from './components/MatchingGameView';
+import ListeningGameView from './components/ListeningGameView';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
@@ -28,6 +30,8 @@ const App: React.FC = () => {
           level={level} 
           setLevel={setLevel} 
           onStartLearning={() => setCurrentView('learn')}
+          onStartGame={() => setCurrentView('game')}
+          onStartListening={() => setCurrentView('listening')}
         />;
       case 'learn':
         return <FlashcardView 
@@ -37,6 +41,16 @@ const App: React.FC = () => {
           onPrev={() => setCurrentWordIndex(prev => (prev - 1 + words.length) % words.length)}
           onBack={() => setCurrentView('home')}
         />;
+      case 'game':
+        return <MatchingGameView 
+          words={words}
+          onBack={() => setCurrentView('home')}
+        />;
+      case 'listening':
+        return <ListeningGameView 
+          words={words}
+          onBack={() => setCurrentView('home')}
+        />;
       case 'stats':
         return <StatsView level={level} />;
       case 'search':
@@ -44,7 +58,14 @@ const App: React.FC = () => {
       case 'profile':
         return <ProfileView level={level} onLevelChange={setLevel} />;
       default:
-        return <HomeView session={session} level={level} setLevel={setLevel} onStartLearning={() => setCurrentView('learn')} />;
+        return <HomeView 
+          session={session} 
+          level={level} 
+          setLevel={setLevel} 
+          onStartLearning={() => setCurrentView('learn')}
+          onStartGame={() => setCurrentView('game')}
+          onStartListening={() => setCurrentView('listening')}
+        />;
     }
   };
 
@@ -75,8 +96,10 @@ const HomeView: React.FC<{
   session: StudySession, 
   level: JLPTLevel, 
   setLevel: (l: JLPTLevel) => void,
-  onStartLearning: () => void 
-}> = ({ session, level, setLevel, onStartLearning }) => {
+  onStartLearning: () => void,
+  onStartGame: () => void,
+  onStartListening: () => void
+}> = ({ session, level, setLevel, onStartLearning, onStartGame, onStartListening }) => {
   return (
     <div className="p-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
@@ -132,17 +155,25 @@ const HomeView: React.FC<{
 
       {/* Quick Action Grid */}
       <section className="grid grid-cols-4 gap-4">
-        <QuickAction icon={<Mic className="text-blue-400" />} label="発音練習" />
+        <QuickAction 
+          icon={<Mic className="text-blue-400" />} 
+          label="発音練習" 
+          onClick={onStartListening}
+        />
         <QuickAction icon={<HelpCircle className="text-orange-400" />} label="ヒント" />
         <QuickAction icon={<Star className="text-yellow-400" />} label="お気に入り" />
-        <QuickAction icon={<Gamepad2 className="text-purple-400" />} label="ミニゲーム" />
+        <QuickAction 
+          icon={<Gamepad2 className="text-purple-400" />} 
+          label="ミニゲーム" 
+          onClick={onStartGame}
+        />
       </section>
     </div>
   );
 };
 
-const QuickAction: React.FC<{ icon: React.ReactNode, label: string }> = ({ icon, label }) => (
-  <button className="flex flex-col items-center space-y-2">
+const QuickAction: React.FC<{ icon: React.ReactNode, label: string, onClick?: () => void }> = ({ icon, label, onClick }) => (
+  <button onClick={onClick} className="flex flex-col items-center space-y-2 hover:opacity-80 transition-opacity active:scale-95">
     <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center">
       {icon}
     </div>
