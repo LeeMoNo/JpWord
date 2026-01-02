@@ -13,11 +13,16 @@
         body {
             font-family: 'Noto Sans JP', 'M PLUS Rounded 1c', sans-serif;
             background-color: #fff5f7;
+            /* Placeholder for background image. 
+               Replace the URL below with your direct image link (e.g. from public folder) 
+               User provided link: https://gemini.google.com/share/1a38476fe7d6
+            */
+            background-image: linear-gradient(rgba(255, 245, 247, 0.9), rgba(255, 228, 233, 0.95)), url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
-        }
-        .sakura-bg {
-            background: linear-gradient(180deg, #fff5f7 0%, #ffe4e9 100%);
         }
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
@@ -66,7 +71,7 @@
 }
 </script>
 </head>
-<body class="sakura-bg min-h-screen text-slate-800">
+<body class="min-h-screen text-slate-800">
     <div id="root"></div>
 </body>
 </html>

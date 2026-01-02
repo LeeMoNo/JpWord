@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Home, BookOpen, BarChart3, User, Search, Settings, Mic, HelpCircle, Star, Gamepad2, ChevronRight, ChevronLeft, RefreshCw, PenTool, Keyboard, Coffee, GraduationCap } from 'lucide-react';
+import { Home, BookOpen, BarChart3, User, Search, Settings, Mic, HelpCircle, Star, Gamepad2, ChevronRight, ChevronLeft, RefreshCw, PenTool, Keyboard, Coffee, GraduationCap, Sprout } from 'lucide-react';
 import { ViewType, JLPTLevel, Word, StudySession } from './types';
 import { MOCK_WORDS } from './constants';
 import FlashcardView from './components/FlashcardView';
@@ -122,23 +122,46 @@ const HomeView: React.FC<{
 }> = ({ session, level, setLevel, onStartLearning, onStartGame, onStartListening, onStartVerbQuiz, onStartKanaGame, onStartDailyQuiz, onStartJLPTQuiz, onOpenProfile }) => {
   return (
     <div className="p-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
-      {/* Header */}
+      {/* Header with Logo */}
       <header className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-800 tracking-tight">日本語単語マスター</h1>
-          <p className="text-slate-500 mt-1">こんにちは、学習を始めましょう！</p>
+        <div className="flex items-center gap-3">
+          {/* Logo Placeholder - User please replace src with: https://gemini.google.com/share/b77f6a1665ae (Actual Image URL) */}
+          <div className="w-12 h-12 rounded-xl overflow-hidden shadow-md bg-white border border-sakura-100">
+             <img 
+               src="https://placehold.co/100x100/ff335c/ffffff?text=Sakura" 
+               alt="App Logo" 
+               className="w-full h-full object-cover"
+             />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800 tracking-tight leading-none">日本語<br/><span className="text-sakura-500">マスター</span></h1>
+          </div>
         </div>
         <button onClick={onOpenProfile} className="w-10 h-10 rounded-full bg-sakura-100 flex items-center justify-center text-sakura-500 shadow-sm transition-transform hover:scale-105">
           <Settings size={20} />
         </button>
       </header>
 
-      {/* Level Selection Section (Moved from Profile) */}
-      <section className="bg-white rounded-3xl p-6 shadow-sm border border-sakura-100">
-        <div className="flex items-center space-x-3 mb-4">
-          <BookOpen size={20} className="text-sakura-400" />
-          <h3 className="font-bold text-slate-800">学習レベルを選択</h3>
+      {/* Level Selection Section */}
+      <section className="bg-white rounded-3xl p-5 shadow-sm border border-sakura-100">
+        <div className="flex items-center space-x-2 mb-3">
+          <BookOpen size={18} className="text-sakura-400" />
+          <h3 className="font-bold text-slate-700 text-sm">学習レベル (Level)</h3>
         </div>
+        
+        {/* Basic Level Button */}
+        <button 
+            onClick={() => setLevel('Basic')}
+            className={`w-full mb-3 py-3 rounded-xl flex items-center justify-center font-bold text-sm transition-all gap-2
+              ${level === 'Basic' 
+                ? 'bg-green-400 text-white shadow-md ring-2 ring-green-200' 
+                : 'bg-green-50 text-green-600 hover:bg-green-100 border border-green-100'}
+            `}
+        >
+            <Sprout size={18} /> 基础单词 (Basic)
+        </button>
+
+        {/* JLPT Levels */}
         <div className="grid grid-cols-5 gap-2">
           {(['N5', 'N4', 'N3', 'N2', 'N1'] as JLPTLevel[]).map(l => (
             <button
@@ -156,7 +179,7 @@ const HomeView: React.FC<{
         </div>
       </section>
 
-      {/* Main Study Card (Preview) */}
+      {/* Main Study Card */}
       <div 
         onClick={onStartLearning}
         className="relative group cursor-pointer"
@@ -164,14 +187,28 @@ const HomeView: React.FC<{
         <div className="absolute inset-0 bg-sakura-200 rounded-[2.5rem] rotate-3 scale-95 opacity-50 transition-transform group-hover:rotate-1"></div>
         <div className="absolute inset-0 bg-sakura-100 rounded-[2.5rem] -rotate-3 scale-95 opacity-50 transition-transform group-hover:rotate-[-1deg]"></div>
         
-        <div className="relative bg-white rounded-[2.5rem] p-8 shadow-xl border border-white flex flex-col items-center justify-center min-h-[300px] text-center">
+        <div className="relative bg-white rounded-[2.5rem] p-8 shadow-xl border border-white flex flex-col items-center justify-center min-h-[280px] text-center overflow-hidden">
+          {/* Main Card Background Decoration */}
+          <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ff335c 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+
           <div className="absolute top-4 right-6 text-sakura-300">
              <img src="https://cdn-icons-png.flaticon.com/512/3232/3232812.png" className="w-8 h-8 opacity-60" alt="sakura petal" />
           </div>
-          <span className="text-sakura-500 font-bold bg-sakura-50 px-3 py-1 rounded-full text-sm mb-6">{level} 集中コース</span>
-          <h3 className="text-6xl font-bold mb-4 text-slate-800">勉</h3>
-          <p className="text-2xl text-slate-400 mb-8">べんきょう</p>
-          <button className="bg-sakura-400 text-white font-bold py-3 px-10 rounded-full shadow-lg hover:bg-sakura-500 transition-colors">
+          
+          <span className={`font-bold px-4 py-1 rounded-full text-sm mb-6 transition-colors
+             ${level === 'Basic' ? 'bg-green-100 text-green-600' : 'bg-sakura-50 text-sakura-500'}
+          `}>
+            {level === 'Basic' ? '基础入门' : `${level} 集中コース`}
+          </span>
+          
+          <h3 className="text-5xl font-bold mb-4 text-slate-800 font-serif">
+            {level === 'Basic' ? '基' : '勉'}
+          </h3>
+          <p className="text-xl text-slate-400 mb-8 font-serif">
+            {level === 'Basic' ? 'きほん' : 'べんきょう'}
+          </p>
+          
+          <button className="bg-sakura-400 text-white font-bold py-3 px-10 rounded-full shadow-lg hover:bg-sakura-500 transition-colors z-10">
             学習を続ける
           </button>
         </div>
@@ -181,7 +218,7 @@ const HomeView: React.FC<{
       <section className="grid grid-cols-3 gap-3">
         <QuickAction 
           icon={<Mic className="text-blue-400" />} 
-          label="発音練習" 
+          label="落樱识词" 
           onClick={onStartListening}
         />
         <QuickAction 
@@ -206,7 +243,7 @@ const HomeView: React.FC<{
         />
         <QuickAction 
           icon={<Gamepad2 className="text-purple-400" />} 
-          label="ミニゲーム" 
+          label="单词配对" 
           onClick={onStartGame}
         />
       </section>

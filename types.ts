@@ -1,5 +1,5 @@
 
-export type JLPTLevel = 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
+export type JLPTLevel = 'Basic' | 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
 
 export interface Word {
   id: string;
@@ -9,6 +9,7 @@ export interface Word {
   meaning: string;
   example: string;
   level: JLPTLevel;
+  category?: string; // Optional category for Basic level grouping
 }
 
 export type ViewType = 'home' | 'learn' | 'profile' | 'game' | 'listening' | 'verbQuiz' | 'kanaGame' | 'dailyQuiz' | 'jlptQuiz';
